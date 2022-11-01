@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.23)
-project(untitled)
+project(C++ for Casino++)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(untitled main.cpp)
+set(CMAKE_EXE_LINKER_FLAGS "-static")
+
+add_executable(C++ for Casino++ main.cpp)
