@@ -49,6 +49,7 @@ void dealers_hit(){
             }
         }
         std::cout << "\nDealers hand >> " << dealers_count << std::endl;
+        dealers_count = 0;
         dealers_cards++;
 
         for (int s = 0; rows > s; s++) {
@@ -90,8 +91,8 @@ void players_hit(){
         }
     }
     std::cout << "\nDealers hand >> " << dealers_count << std::endl;
-
     players_count = 0;
+
     for(int y=0; players_cards>y; y++){
         players_count += players_num[y];
     }
