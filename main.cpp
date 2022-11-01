@@ -103,12 +103,11 @@ void players_hit(){
     }
     std::cout << "\n\nPlayers hand >> " << players_count << std::endl;
 
-    if(players_count>21){
-        std::cout<<"\nWent over 21!"<<std::endl;
+    if(players_count == 21 && players_cards == 2){
+        std::cout << "Blackjack!" << std::endl;
         dealers_hit();
     }
-    else if(players_count==21 && players_cards == 2){
-        std::cout << "Blackjack!" << std::endl;
+    else if(players_count > 21){
         dealers_hit();
     }
     else{
