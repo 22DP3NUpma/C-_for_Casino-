@@ -16,31 +16,36 @@ std::string card[13] =
         choice;
 
 int dealers_num[10], players_num[10],
-cards, rows = 4, dd = 1,
+cards = 1, rows = 4, dd = 1,
 players_cards = 2, dealers_cards = 2,
 players_count = 0, dealers_count = 0;
 
 double players_money = 0, bet = 0;
+
+bool insurance = false;
 
 void deposit(){
     std::cout<<"How much would you like to deposit?"<<std::endl;
     std::cout<<"$ ";
     std::cin>>players_money;
 }
-
 void game_bet(){
     std::cout<<"Bet: ";
     std::cin>>bet;
     players_money -= bet;
 }
-
 void dealers_hit(){
     while(17>=dealers_count){
         std::cout << space;
         std::cout << rules << std::endl;
         dealers_count = 0;
         for (int u = 0; dealers_cards > u; u++) {
-            dealers_count += dealers_num[u];
+            if(dealers_num[u] == 11 && dealers_cards > 2){
+                dealers_count++;
+            }
+            else{
+                dealers_count += dealers_num[u];
+            }
         }
         for (int p = 0; rows > p; p++) {
             std::cout << "\n";
@@ -62,31 +67,30 @@ void dealers_hit(){
         std::cin.ignore(1);
         std::cin.get();
     }
-    if(dealers_count>players_count && dealers_count<=21){
-        std::cout<<"Dealer wins!"<<std::endl;
-    }
-    else if(dealers_count==players_count){
-        if(dealers_count<=21 && players_count<=21){
-            std::cout<<"Push!"<<std::endl;
-            players_money += bet;
+    if()
+        if(dealers_count>players_count && dealers_count<=21){
+            std::cout<<"Dealer wins!"<<std::endl;
+        }
+        else if(dealers_count==players_count){
+            if(dealers_count<=21 && players_count<=21){
+                std::cout<<"Push!"<<std::endl;
+                players_money += bet;
+            }
+            else{
+                std::cout<<"House wins!"<<std::endl;
+            }
+        }
+        else if(21<players_count){
+            std::cout<<"You busted!"<<std::endl;
         }
         else{
-            std::cout<<"House wins!"<<std::endl;
+            std::cout<<"You win!"<<std::endl;
+            players_money += (bet*2);
         }
-    }
-    else if(21<players_count){
-        std::cout<<"You busted!"<<std::endl;
-    }
-    else{
-        std::cout<<"You win!"<<std::endl;
-        players_money += (bet*2);
-    }
 }
-
 void players_hit(){
     std::cout << space;
     std::cout<<rules<<std::endl;
-    cards = 1;
     for (int e = 0; rows > e; e++) {
         std::cout << "\n";
         dealers_count = +dealers_num[0];
@@ -98,7 +102,12 @@ void players_hit(){
     players_count = 0;
 
     for(int y=0; players_cards>y; y++){
-        players_count += players_num[y];
+        if(players_num[y] == 11 && players_cards > 2){
+            players_count++;
+        }
+        else{
+            players_count += players_num[y];
+        }
     }
     for (int q = 0; rows > q; q++) {
         std::cout << "\n";
@@ -107,6 +116,14 @@ void players_hit(){
         }
     }
     std::cout << "\n\nPlayers hand >> " << players_count << std::endl;
+
+    if(dealers_count == 11){
+        std::cout << "Buy insurance?" << std::endl;
+        std::cin >> choice;
+        if(choice == "Y" || choice == "y") {
+            insurance = true;
+        }
+    }
 
     if(players_count == 21 && players_cards == 2){
         std::cout << "Blackjack!" << std::endl;
@@ -150,7 +167,6 @@ void players_hit(){
         }
     }
 }
-
 void blackjack(){
     game_bet();
 
@@ -178,7 +194,6 @@ void blackjack(){
             dealers_hand[i][3] = "|__" + num + "| ";
         }
     }
-
     for(int x=0; 10>x; x++){
         std::string num = card[rand() % 13];
         if(num == "J" || num == "Q" || num == "K"){
@@ -203,10 +218,8 @@ void blackjack(){
             players_hand[x][3] = "|__" + num + "| ";
         }
     }
-
     players_hit();
 }
-
 int main(){
     SetConsoleOutputCP(CP_UTF8);
     srand(time(NULL));
