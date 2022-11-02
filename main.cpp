@@ -35,10 +35,10 @@ void game_bet(){
 }
 
 void dealers_hit(){
-    dealers_count = 0;
-    while(17>dealers_count){
+    while(17>=dealers_count){
         std::cout << space;
         std::cout << rules << std::endl;
+        dealers_count = 0;
         for (int u = 0; dealers_cards > u; u++) {
             dealers_count += dealers_num[u];
         }
@@ -49,7 +49,6 @@ void dealers_hit(){
             }
         }
         std::cout << "\nDealers hand >> " << dealers_count << std::endl;
-        dealers_count = 0;
         dealers_cards++;
 
         for (int s = 0; rows > s; s++) {
@@ -67,15 +66,20 @@ void dealers_hit(){
         std::cout<<"Dealer wins!"<<std::endl;
     }
     else if(dealers_count==players_count){
-        std::cout<<"Push!"<<std::endl;
-        players_money + bet;
+        if(dealers_count<=21 && players_count<=21){
+            std::cout<<"Push!"<<std::endl;
+            players_money += bet;
+        }
+        else{
+            std::cout<<"House wins!"<<std::endl;
+        }
     }
     else if(21<players_count){
         std::cout<<"You busted!"<<std::endl;
     }
     else{
         std::cout<<"You win!"<<std::endl;
-        players_money + (bet*2);
+        players_money += (bet*2);
     }
 }
 
@@ -126,6 +130,8 @@ void players_hit(){
             }
             else if (choice == "D" || choice == "d"){
                 dd--;
+                players_money -= bet;
+                2*bet;
                 players_cards++;
                 players_hit();
             }
