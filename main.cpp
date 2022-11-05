@@ -67,26 +67,27 @@ void dealers_hit(){
         std::cin.ignore(1);
         std::cin.get();
     }
-    if()
-        if(dealers_count>players_count && dealers_count<=21){
-            std::cout<<"Dealer wins!"<<std::endl;
-        }
-        else if(dealers_count==players_count){
-            if(dealers_count<=21 && players_count<=21){
-                std::cout<<"Push!"<<std::endl;
+    if(insurance == true && dealers_count == 21 && dealers_cards == 2){
+        std::cout<<"Dealer wins!"<<std::endl;
+        players_money += bet;
+    }
+    else{
+        if (dealers_count > players_count && dealers_count <= 21) {
+            std::cout << "Dealer wins!" << std::endl;
+        } else if (dealers_count == players_count) {
+            if (dealers_count <= 21 && players_count <= 21) {
+                std::cout << "Push!" << std::endl;
                 players_money += bet;
+            } else {
+                std::cout << "House wins!" << std::endl;
             }
-            else{
-                std::cout<<"House wins!"<<std::endl;
-            }
+        } else if (21 < players_count) {
+            std::cout << "You busted!" << std::endl;
+        } else {
+            std::cout << "You win!" << std::endl;
+            players_money += (bet * 2);
         }
-        else if(21<players_count){
-            std::cout<<"You busted!"<<std::endl;
-        }
-        else{
-            std::cout<<"You win!"<<std::endl;
-            players_money += (bet*2);
-        }
+    }
 }
 void players_hit(){
     std::cout << space;
@@ -117,10 +118,11 @@ void players_hit(){
     }
     std::cout << "\n\nPlayers hand >> " << players_count << std::endl;
 
-    if(dealers_count == 11){
-        std::cout << "Buy insurance?" << std::endl;
+    if(dealers_count == 11 && players_cards == 2){
+        std::cout << "Buy insurance? [Y/N]" << std::endl;
         std::cin >> choice;
         if(choice == "Y" || choice == "y") {
+            players_money -= bet/2;
             insurance = true;
         }
     }
@@ -226,8 +228,8 @@ int main(){
     std::cout << "Welcome to the Casino++!" << std::endl;
     deposit();
     std::cout << "We will play blackjack today!" << std::endl;
-    do{ blackjack();
-        std::cout << '\n' << "Casino account >> " << players_money << "$" << "\nPress (q)uit to exit or anything else to continue >> ";
+    do{
+        std::cout << '\n' << "Casino account >> " << players_money << "$" << "\nPress (q)uit to exit >> ";
     } while (std::cin.get() != 'q');
 
     return 0;

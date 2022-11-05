@@ -5,4 +5,4 @@ set(CMAKE_CXX_STANDARD 14)
 
 set(CMAKE_EXE_LINKER_FLAGS "-static")
 
-add_executable(C++_for_Casino++ main.cpp)
+add_executable(C_for_Casino main.cpp)
