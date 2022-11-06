@@ -88,6 +88,13 @@ void dealers_hit(){
             players_money += (bet * 2);
         }
     }
+    cards = 1, rows = 4, dd = 1,
+    players_cards = 2, dealers_cards = 2,
+    players_count = 0, dealers_count = 0;
+
+    players_money = 0, bet = 0;
+
+    insurance = false;
 }
 void players_hit(){
     std::cout << space;
