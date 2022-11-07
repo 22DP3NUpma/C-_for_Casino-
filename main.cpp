@@ -1,11 +1,14 @@
 #include <iostream>
 #include <string>
+#ifdef __linux__
+#include <>
+#else
 #include <windows.h>
 
 std::string card[13] =
         {"2","3","4","5","6","7","8","9","10","J","Q","K","A"},
         simbol[4] = {"\u2665","\u2666","\u2660","\u2663"},
-        dealers_hand[10][4], players_hand[10][4],
+        dealers_hand[10][4], players_hand[10][4], split_hand[10][4],
         space = "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
         rules ="Rules:\nTry to get as close to 21 without going over.\nKings, Queens, and Jacks are worth 10 points.\nAces are worth 1 or 11 points.\nCards 2 through 10 are worth their face value.\n(H)it to take another card.\n(S)tand to stop taking cards.\nOn your first play, you can (D)ouble down to increase your bet\nbut must hit exactly one more time before standing.\nIn case of a tie, the bet is returned to the player.\nThe dealer stops hitting at 17.",
         back_side[4] = {
@@ -15,14 +18,14 @@ std::string card[13] =
         "|_##| "},
         choice;
 
-int dealers_num[10], players_num[10],
-cards = 1, rows = 4, dd = 1,
-players_cards = 2, dealers_cards = 2,
-players_count = 0, dealers_count = 0;
+int dealers_num[10], players_num[10], split_num[10],
+cards, rows, dd,
+players_cards, dealers_cards,
+players_count, dealers_count;
 
-double players_money = 0, bet = 0;
+double players_money, bet;
 
-bool insurance = false;
+bool insurance;
 
 void deposit(){
     std::cout<<"How much would you like to deposit?"<<std::endl;
@@ -88,13 +91,6 @@ void dealers_hit(){
             players_money += (bet * 2);
         }
     }
-    cards = 1, rows = 4, dd = 1,
-    players_cards = 2, dealers_cards = 2,
-    players_count = 0, dealers_count = 0;
-
-    players_money = 0, bet = 0;
-
-    insurance = false;
 }
 void players_hit(){
     std::cout << space;
@@ -177,6 +173,15 @@ void players_hit(){
     }
 }
 void blackjack(){
+
+    cards = 1, rows = 4, dd = 1,
+    players_cards = 2, dealers_cards = 2,
+    players_count = 0, dealers_count = 0;
+
+    players_money = 0, bet = 0;
+
+    insurance = false;
+
     game_bet();
 
     for(int i=0; 10>i; i++){
@@ -227,6 +232,30 @@ void blackjack(){
             players_hand[x][3] = "|__" + num + "| ";
         }
     }
+    for(int l=0; 10>l; l++){
+        std::string num = card[rand() % 13];
+        if(num == "J" || num == "Q" || num == "K"){
+            split_num[l] = 10;
+        }
+        else if(num == "A"){
+            split_num[l] = 11;
+        }
+        else{
+            split_num[l] = std::stoi(num);
+        }
+        if (num == "10"){
+            split_hand[l][0] = " ___  ";
+            split_hand[l][1] = "|"+num+" | ";
+            split_hand[l][2] = "| "+simbol[rand() % 4]+" | ";
+            split_hand[l][3] = "|_"+num+"| ";
+        }
+        else {
+            split_hand[l][0] = " ___  ";
+            split_hand[l][1] = "|" + num + "  | ";
+            split_hand[l][2] = "| " + simbol[rand() % 4] + " | ";
+            split_hand[l][3] = "|__" + num + "| ";
+        }
+    }
     players_hit();
 }
 int main(){
@@ -236,7 +265,7 @@ int main(){
     deposit();
     std::cout << "We will play blackjack today!" << std::endl;
     do{blackjack();
-        std::cout << '\n' << "Casino account >> " << players_money << "$" << "\nPress (q)uit to exit >> ";
+        std::cout << '\n' << "Casino account >> " << players_money << "$" << "\nPress (q)uit to exit or any other key to continue >> ";
     } while (std::cin.get() != 'q');
 
     return 0;
