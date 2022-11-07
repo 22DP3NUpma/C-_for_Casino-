@@ -235,7 +235,7 @@ int main(){
     std::cout << "Welcome to the Casino++!" << std::endl;
     deposit();
     std::cout << "We will play blackjack today!" << std::endl;
-    do{
+    do{blackjack();
         std::cout << '\n' << "Casino account >> " << players_money << "$" << "\nPress (q)uit to exit >> ";
     } while (std::cin.get() != 'q');
 
