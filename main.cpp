@@ -1,8 +1,9 @@
 #include <iostream>
 #include <string>
 #ifdef __linux__
-#include <>
+#include <cstdlib>
 #else
+#endif
 #include <windows.h>
 
 std::string card[13] =
@@ -153,7 +154,7 @@ void players_hit(){
             else if (choice == "D" || choice == "d"){
                 dd--;
                 players_money -= bet;
-                2*bet;
+                bet*=2;
                 players_cards++;
                 players_hit();
             }
